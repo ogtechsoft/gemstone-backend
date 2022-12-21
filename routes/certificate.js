@@ -137,8 +137,13 @@ router.put("/certificates/:id", async (req, res) => {
   })
     .then(async (result) => {
       let getCertificateData = await getCertificate(req.params.id);
+      // console.log(getCertificateData.attachment.fileName, "getCertificateData");
       if (getCertificateData) {
-        let pdf = await pdfGen(req.body, req.params.id);
+        let pdf = await pdfGen(
+          req.body,
+          req.params.id,
+          getCertificateData.attachment.fileName
+        );
         Certificate.update(
           { pdf: pdf },
           {

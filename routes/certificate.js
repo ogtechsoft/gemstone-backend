@@ -4,7 +4,7 @@ const router = express.Router();
 const Certificate = require("../models/Certificate");
 const Attach = require("../models/Attach");
 const verifyJwt = require("../middleware/verfiyJwt");
-const pdfGen = require("../utils/pdf")
+const pdfGen = require("../utils/pdf");
 const { storingFiles, isfileExist } = require("./attach");
 
 Certificate.hasOne(Attach, { foreignKey: "foreignId" });
@@ -66,15 +66,14 @@ router.get("/certificates/lookup/:reportNumber", async (req, res) => {
 // create certificates
 router.post("/certificates", async (req, res) => {
   let newCertificate = await createCertificate(req.body);
-  console.log(newCertificate.dataValues.id,"newCertificatenewCertificate");
+  // console.log(newCertificate.dataValues.id, "newCertificatenewCertificate");
   //let pdf = await pdfGen(req.body,newCertificate.dataValues.id)
   //Certificate.update({pdf:pdf}, {
-    //where: { id: newCertificate.dataValues.id },
+  //where: { id: newCertificate.dataValues.id },
   //})
   if (req.body.image || req.body.image_data !== undefined) {
     let imageName = req.body.image;
     // console.log({ imageName });
-
 
     if (isfileExist(imageName)) {
       let imageStored = await storingFiles(
@@ -94,12 +93,15 @@ router.post("/certificates", async (req, res) => {
 
   if (newCertificate) {
     let certificateById = await getCertificate(newCertificate.id);
-	//let certificateById = await getCertificate(newCertificate.id);
-    let pdf = await pdfGen(req.body,newCertificate.dataValues.id)
-  Certificate.update({pdf:pdf}, {
-    where: { id: newCertificate.dataValues.id },
-  })    
-if (certificateById) {
+    //let certificateById = await getCertificate(newCertificate.id);
+    let pdf = await pdfGen(req.body, newCertificate.dataValues.id);
+    Certificate.update(
+      { pdf: pdf },
+      {
+        where: { id: newCertificate.dataValues.id },
+      }
+    );
+    if (certificateById) {
       return res.json({ message: certificateById });
     } else {
       return res.status(422).json({ message: "Something Went wrong" });
@@ -129,12 +131,20 @@ router.put("/certificates/:id", async (req, res) => {
       res.status(404).json({ message: "File not found", status: false });
     }
   }
+  // console.log(req.body, "req.bodyreq.body");
   Certificate.update(req.body, {
     where: { id: req.params.id },
   })
     .then(async (result) => {
       let getCertificateData = await getCertificate(req.params.id);
       if (getCertificateData) {
+        let pdf = await pdfGen(req.body, req.params.id);
+        Certificate.update(
+          { pdf: pdf },
+          {
+            where: { id: req.params.id },
+          }
+        );
         res.json({ message: getCertificateData, status: true });
       } else if (getCertificateData === false) {
         res

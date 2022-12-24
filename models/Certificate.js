@@ -69,6 +69,10 @@ module.exports = db.sequelize.define(
       type: Sequelize.JSON,
       defaultValue: null,
     },
+    type: {
+      type: Sequelize.NUMBER,
+      defaultValue: 0,
+    },
   },
   {
     timestamps: 1,

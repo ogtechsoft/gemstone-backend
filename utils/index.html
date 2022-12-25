@@ -51,12 +51,12 @@
           >
             An ISO 9001:2005 Certified Organization
           </p>
-          <p style="font-size: 14px; line-height: 1.5">
+          <!-- <p style="font-size: 14px; line-height: 1.5">
             REPORT NUMBER: <%=data.reportNumber%>
           </p>
           <p style="font-size: 14px; line-height: 1.4">
             REPORT DATE : <%=data.reportDate%>
-          </p>
+          </p> -->
         </div>
       </div>
 
@@ -80,17 +80,27 @@
       <div style="display: flex; align-items: flex-start">
         <div style="width: 70%; margin-top: 10px">
           <table style="width: 90%">
+            <tr
+              style="background: #f7f7f7; margin-bottom: 10px; display: block"
+              bgcolor="#f7f7f7"
+            >
+              <td style="padding: 10px 5px; width: 250px">Report Number</td>
+              <td style="padding: 10px 5px"><%=data.reportNumber%></td>
+            </tr>
+            <tr
+              style="background: #f7f7f7; margin-bottom: 10px; display: block"
+              bgcolor="#f7f7f7"
+            >
+              <td style="padding: 10px 5px; width: 250px">Report Date</td>
+              <td style="padding: 10px 5px"><%=data.reportDate%></td>
+            </tr>
             <%for (var key in data.other[0]){%>
             <tr
               style="background: #f7f7f7; margin-bottom: 10px; display: block"
               bgcolor="#f7f7f7"
             >
-              <td style="padding: 10px 5px; width: 250px">
-                <%=key%>
-              </td>
-              <td style="padding: 10px 5px">
-                <%=data.other[0][key]%>
-              </td>
+              <td style="padding: 10px 5px; width: 250px"><%=key%></td>
+              <td style="padding: 10px 5px"><%=data.other[0][key]%></td>
             </tr>
             <%}%>
             <tr
@@ -104,8 +114,8 @@
         </div>
         <div>
           <img
-            src='<%=data.finalImage%>'
-            alt='<%=data.image%>'
+            src="<%=data.finalImage%>"
+            alt="<%=data.image%>"
             style="height: 175px; object-fit: cover; margin-top: 10px"
           />
         </div>
